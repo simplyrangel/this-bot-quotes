@@ -27,10 +27,8 @@ def format_text(
         if pointer_pixels >= boxx:
             break
     
-    # format quote to fit the box:
+    # format quote and book title to fit the box:
     boxquote = _boxit(text, boxx_char_length)
-    
-    # format the book title to fit the box:
     boxbook = _boxit(book, boxx_char_length)
     
     # add the author and book attribute:
@@ -42,7 +40,7 @@ def format_text(
 def _boxit(astring, boxx_char_length):
     ls = list(astring)
     pointer = boxx_char_length
-    while pointer <= len(astring):
+    while pointer < len(astring):
         if ls[pointer].isspace() is True:
             ls[pointer] = "\n"
         else:
