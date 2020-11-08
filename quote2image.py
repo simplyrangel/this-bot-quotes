@@ -7,7 +7,7 @@ https://www.mainstreethost.com/blog/social-media-image-size-cheat-sheet/
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
-import helper
+import helper.images as images
 
 # recommended image size:
 twitterx = 1024
@@ -44,7 +44,7 @@ for ii in df.index:
     di = ImageDraw.Draw(imi)
 
     # create new quote:
-    result, boxy = helper.format_text(
+    result, boxy = images.format_text(
         quote, 
         book,
         auth,
