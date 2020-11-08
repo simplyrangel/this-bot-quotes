@@ -9,8 +9,7 @@ def format_text(
         author, #string
         d, #image object
         font, #font object
-        boxx, #text box x length [pixels]
-        boxy_min=None #minimum text box y length [pixels]
+        boxx #text box x length [pixels]
         ):
     # format a text string until the shape fits inside the provided 
     # textbox dimensions.
@@ -34,8 +33,11 @@ def format_text(
     # add the author and book attribute:
     result = """%s\n\n-%s\n%s""" %(boxquote,author,boxbook)
     
+    # calculate box y-length in pixels:
+    boxy = d.textsize(result,font=font)[1]
+    
     # return formatted quote:
-    return(result)
+    return(result,boxy)
 
 def _boxit(astring, boxx_char_length):
     ls = list(astring)

@@ -10,48 +10,56 @@ from PIL import Image, ImageDraw, ImageFont
 import helper
 
 # recommended image size:
-imagex = 1024
-imagey = 512
-twitter_timeline_size = (imagex, imagey) #pixels
-borderx = 100
-bordery = 100
+twitterx = 1024
+twittery = 512
+
+# border size:
+borderx = 80
+bordery = 40
+
+# anchor the text to the border's top-left corner:
 text_anchor = (borderx, bordery)
 
-# define textbox shape:
-boxx = imagex - 2*borderx
-boxy = imagey - 2*bordery
+# define textbox pixel length:
+boxx = twitterx - 2*borderx
 
 # read quotes:
 df = pd.read_csv("bookquotes.csv")
-for ii in range(10):
+df = df.fillna("unknown")
+for ii in df.index:
     quote = df.loc[ii, "quote"]
     book = df.loc[ii,"title"]
     auth = df.loc[ii, "author"]
 
     # add actual quotes around the quote and the book attribute:
     quote = '"%s"'%quote
-    book = "'%s'"%book
+    if book!="unknown":
+       book = "'%s'"%book
 
-    # create image. 
-    im = Image.new("RGB", twitter_timeline_size, "white")
-
-    # get a font:
-    fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 40)
-
-    # draw the quote:
-    d = ImageDraw.Draw(im)
+    # create intermediate image, font, and drawn quote:
+    # this intermediate image will be used to calculate the correct
+    # y-length in pixels: 
+    imi = Image.new("RGB", (twitterx,twittery), "white")
+    fnt = ImageFont.truetype("Pillow/Tests/fonts/Norasi.ttf", 40)
+    di = ImageDraw.Draw(imi)
 
     # create new quote:
-    new_quote = helper.format_text(
+    result, boxy = helper.format_text(
         quote, 
         book,
         auth,
-        d, 
+        di, 
         fnt, 
         boxx)
-    print(new_quote)
-
-    d.text(text_anchor, new_quote, font=fnt, fill=(0,0,0))
+        
+    # close intermediate image and create one with the new boxy:
+    imi.close()
+    boxy = boxy+2*bordery
+    im = Image.new("RGB", (twitterx,boxy),"white")
+    d = ImageDraw.Draw(im)
+    
+    # write formatted text to image:
+    d.text(text_anchor, result, font=fnt, fill=(0,0,0))
 
     # create text
     im.save("bin/testimage_%d.png" %ii)
