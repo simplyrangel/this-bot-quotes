@@ -57,7 +57,8 @@ def _format_hashtag(text):
         "'","").replace(
         "(","").replace(
         ")","").replace(
-        ":","")
+        ":","").replace(
+        "-","")
     
 def get_timeline():
     process = Popen(
