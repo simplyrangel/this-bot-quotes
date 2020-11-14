@@ -1,7 +1,55 @@
-"""A module of helpful functions."""
+"""A module to create images from quote texts."""
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
+
+def quote2image(
+        auth,
+        book,
+        quote,
+        imagec = "white",
+        imagex=1024, #pixels
+        imagey=512, #pixels
+        borderx=80, #pixels
+        bordery=40, #pixels
+        font="Pillow/Tests/fonts/Norasi.ttf",
+        fontsize=40,
+        outfi = "bin/quote_of_day.png",
+        ):
+    # anchor text to border's top-left corner:
+    text_anchor = (borderx,bordery)
+    
+    # define textbox pixel length:
+    boxx = imagex - 2*borderx
+    
+    # create intermediate image, font, and drawn quote:
+    # this intermediate image will be used to calculate the correct
+    # y-length in pixels: 
+    imi = Image.new("RGB", (imagex,imagey), imagec)
+    fnt = ImageFont.truetype(font, fontsize)
+    di = ImageDraw.Draw(imi)
+    
+    # format quote text:
+    result, boxy = format_text(
+        quote, 
+        book,
+        auth,
+        di, 
+        fnt, 
+        boxx)
+
+    # close intermediate image and create one with the new boxy:
+    imi.close()
+    boxy = boxy+2*bordery
+    im = Image.new("RGB", (imagex,boxy),imagec)
+    d = ImageDraw.Draw(im)
+
+    # write formatted text to image:
+    d.text(text_anchor, result, font=fnt, fill=(0,0,0))
+
+    # create text
+    im.save(outfi)
+    im.close()
 
 def format_text(
         text, #string
