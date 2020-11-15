@@ -1,6 +1,5 @@
-"""A wrapper for all things Twitter. Uses twurl, a Twitter bash 
-tool. See more info at:
-https://github.com/twitter/twurl
+"""A simple Twitter API wrapper. Uses twurl, a Twitter bash 
+tool. See more info at: https://github.com/twitter/twurl
 """
 from subprocess import Popen, PIPE
 import json
