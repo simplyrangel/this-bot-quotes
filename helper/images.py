@@ -1,4 +1,10 @@
-"""A module to create images from quote texts."""
+"""A module to create images from quote texts. Uses the Pillow
+library for image creation:
+https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html
+
+Recommended Twitter timeline image size:1024x512
+https://www.mainstreethost.com/blog/social-media-image-size-cheat-sheet/
+"""
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
@@ -50,6 +56,9 @@ def quote2image(
     # create text
     im.save(outfi)
     im.close()
+    
+    # return quote:
+    return result
 
 def format_text(
         text, #string
