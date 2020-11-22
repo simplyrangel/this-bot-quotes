@@ -11,8 +11,8 @@ Tweets at: https://twitter.com/ThisBotQuotes
 - Numpy Python library
 - Pandas Python library
 - Pillow Python library
-- Curl (Bash tool managed by Twitter)
+- Twurl (Bash tool managed by Twitter)
 
 I recommend using Anaconda to set up Python3, Numpy, Pandas, and Pillow. 
 
-Curl Github page: https://github.com/curl/curl
+Twurl Github page: https://github.com/twitter/twurl
