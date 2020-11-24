@@ -9,13 +9,68 @@ import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 
+def imake(auth,book,quote,poetry_flag,**kwargs):
+    if poetry_flag is True:
+        poetry2image(auth,book,quote,**kwargs)
+    else:
+        quote2image(auth,book,quote,**kwargs)
+
+def poetry2image(
+        auth,
+        book,
+        quote,
+        imagec="white",
+        borderx=80,
+        bordery=40,
+        font="Pillow/Tests/fonts/Norasi.ttf",
+        fontsize=40,
+        outfi="bin/quote_of_day.png",
+        ):
+    # anchor text to border's top-left corner:
+    text_anchor = (borderx, bordery)
+    
+    # determine the number of characters in the 
+    # longest line of poetry:
+    quote_lines = quote.split("\n")
+    max_line_chars = max([len(x) for x in quote_lines])
+
+    # format book title to fit the box:
+    boxbook = _boxit(book, max_line_chars)
+    
+    # add the author and book attribute:
+    result = """%s\n\n-%s\n%s""" %(quote,auth,boxbook)
+    
+    # create intermediate image, font, and drawn quote:
+    # this intermediate image will be used to calculate the correct
+    # x-length and y-length in pixels: 
+    imi = Image.new("RGB", (1024,512), imagec)
+    fnt = ImageFont.truetype(font, fontsize)
+    di = ImageDraw.Draw(imi)
+    
+    # calculate box and image y-length in pixels:
+    boxx = di.textsize(result,font=fnt)[0]
+    boxy = di.textsize(result,font=fnt)[1]
+
+    # close intermediate image and create one with the new boxy:
+    imi.close()
+    imagex = boxx+2*borderx
+    imagey = boxy+2*bordery
+    im = Image.new("RGB", (imagex,imagey),imagec)
+    d = ImageDraw.Draw(im)
+
+    # write formatted text to image:
+    d.text(text_anchor, result, font=fnt, fill=(0,0,0))
+
+    # create text
+    im.save(outfi)
+    im.close()
+
 def quote2image(
         auth,
         book,
         quote,
         imagec = "white",
         imagex=1024, #pixels
-        imagey=512, #pixels
         borderx=80, #pixels
         bordery=40, #pixels
         font="Pillow/Tests/fonts/Norasi.ttf",
@@ -31,7 +86,7 @@ def quote2image(
     # create intermediate image, font, and drawn quote:
     # this intermediate image will be used to calculate the correct
     # y-length in pixels: 
-    imi = Image.new("RGB", (imagex,imagey), imagec)
+    imi = Image.new("RGB", (imagex,512), imagec)
     fnt = ImageFont.truetype(font, fontsize)
     di = ImageDraw.Draw(imi)
     
@@ -46,8 +101,8 @@ def quote2image(
 
     # close intermediate image and create one with the new boxy:
     imi.close()
-    boxy = boxy+2*bordery
-    im = Image.new("RGB", (imagex,boxy),imagec)
+    imagey = boxy+2*bordery
+    im = Image.new("RGB", (imagex,imagey),imagec)
     d = ImageDraw.Draw(im)
 
     # write formatted text to image:
@@ -57,9 +112,6 @@ def quote2image(
     im.save(outfi)
     im.close()
     
-    # return quote:
-    return result
-
 def format_text(
         text, #string
         book, #string
