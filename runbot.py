@@ -17,14 +17,16 @@ def console_message(text):
 
 def tweet_quote():
     # read quotes data:
-    df = pd.read_csv("bookquotes.csv")
-    df = df.fillna("unknown")
+    df = pd.read_csv("bookquotes.csv", comment="#")
+    df.loc[:,"title"] = df.title.fillna("unknown")
+    df.loc[:,"author"] = df.author.fillna("unknown")
 
     # choose a random quote:
     rand_id = np.random.randint(df.index[0], df.index[-1]+1)
     auth = df.loc[rand_id,"author"]
     book = df.loc[rand_id,"title"]
     quote = df.loc[rand_id, "quote"]
+    poetry_flag = df.loc[rand_id, "poetry"]
 
     # add quotes around the quote text and book text:
     quote = "'%s'" %quote
@@ -35,7 +37,11 @@ def tweet_quote():
     tweet_text = twrap.generate_hashtags(auth, book)
 
     # create tweet image:
-    tweet_image_text = images.quote2image(auth,book,quote)
+    images.imake(
+        auth,
+        book,
+        quote,
+        poetry_flag=poetry_flag)
 
     # upload tweet image:
     upload_stdout = twrap.upload_media("bin/quote_of_day.png")
@@ -45,7 +51,7 @@ def tweet_quote():
     twrap.tweetme(tweet_text,media_id=media_id)
     
     # print to console:
-    console_message(tweet_image_text)
+    console_message(quote)
     
 # ----------------------------------------------------
 # Execute command.
