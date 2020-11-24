@@ -5,7 +5,7 @@ import helper.tweetwrapper as twrap
 import helper.images as images
 
 # read quotes data:
-df = pd.read_csv("bookquotes.csv")
+df = pd.read_csv("bookquotes.csv", comment="#")
 df = df.fillna("unknown")
 
 # create images for all the quotes:
