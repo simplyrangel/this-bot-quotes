@@ -53,7 +53,8 @@ def _format_hashtag(text):
         " ","").replace(
         ",","").replace(
         ".","").replace(
-        "'","").replace(
+        "'","").replace( #straight quote
+        "’","").replace( #curly quote
         "(","").replace(
         ")","").replace(
         ":","").replace(
