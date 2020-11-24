@@ -3,7 +3,7 @@ is open)."""
 import numpy as np
 import pandas as pd
 import threading
-import time
+from datetime import datetime
 import helper.tweetwrapper as twrap
 import helper.images as images
 
@@ -11,8 +11,8 @@ import helper.images as images
 # Local functions.
 # ----------------------------------------------------
 def console_message(text):
-    print("""On {time} I tweeted:\n{tweet}\n""".format(
-        time=time.ctime(),
+    print("""{time}: I tweeted:\n{tweet}\n""".format(
+        time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         tweet=text))
 
 def tweet_quote():
@@ -60,10 +60,29 @@ def tweet_quote():
 interval_hours = 2 #every two hours
 interval_seconds = interval_hours*60*60
 
+# define hours when the bot can tweet:
+hi = 7 #first hour; 7am
+he = 22 #last hour; 10pm
+
 # create event and execute once every interval:
 ticker = threading.Event()
 while ticker.wait(interval_seconds) is False:
-    tweet_quote()
+    now = datetime.now()
+    today = datetime.today()
+    ti = datetime(
+        year=today.year,
+        month=today.month,
+        day=today.day,
+        hour=hi)
+    te = datetime(
+        year=today.year,
+        month=today.month,
+        day=today.day,
+        hour=he)
+    if now >= ti and now <= te:
+        tweet_quote()
+    else:
+        print("no tweet; outside acceptable time.")
 
 
 
