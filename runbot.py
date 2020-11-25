@@ -84,16 +84,15 @@ track_id = []
 ticker = threading.Event()
 while ticker.wait(interval_seconds) is False:
     now = datetime.now()
-    today = datetime.today()
     ti = datetime(
-        year=today.year,
-        month=today.month,
-        day=today.day,
+        year=now.year,
+        month=now.month,
+        day=now.day,
         hour=hi)
     te = datetime(
-        year=today.year,
-        month=today.month,
-        day=today.day,
+        year=now.year,
+        month=now.month,
+        day=now.day,
         hour=he)
     if now >= ti and now <= te:
         tweet_quote(track_id)
