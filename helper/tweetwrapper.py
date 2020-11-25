@@ -36,7 +36,6 @@ def tweetme(text,media_id=None):
             "media_ids=%s&status=%s" %(media_id,text)]
     process = Popen(cmd,stdout=PIPE,stderr=PIPE)
     stdout,stderr = process.communicate()
-    return stdout
      
 def generate_hashtags(auth, book, topics):
     if book!="unknown":
@@ -64,7 +63,8 @@ def _format_hashtag(text):
         "(","").replace(
         ")","").replace(
         ":","").replace(
-        "-","")
+        "-","").replace(
+        "&","")
     
 def get_timeline():
     process = Popen(
