@@ -35,6 +35,7 @@ def tweet_quote(track_id):
     auth = df.loc[quote_id,"author"]
     book = df.loc[quote_id,"title"]
     quote = df.loc[quote_id, "quote"]
+    topics = df.loc[quote_id, "topics"]
     poetry_flag = df.loc[quote_id, "poetry"]
 
     # add quotes around the quote text and book text:
@@ -43,7 +44,7 @@ def tweet_quote(track_id):
         book="'%s'" %book
 
     # create tweet hashtags:
-    tweet_text = twrap.generate_hashtags(auth, book)
+    tweet_text = twrap.generate_hashtags(auth, book, topics)
 
     # create tweet image:
     images.imake(

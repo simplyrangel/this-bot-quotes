@@ -38,7 +38,7 @@ def tweetme(text,media_id=None):
     stdout,stderr = process.communicate()
     return stdout
      
-def generate_hashtags(auth, book):
+def generate_hashtags(auth, book, topics):
     if book!="unknown":
         tweet_text = "#books #bookquotes #{book} #{author}".format(
             book=_format_hashtag(book),
@@ -46,6 +46,12 @@ def generate_hashtags(auth, book):
     else:
         tweet_text = "#books #bookquotes #{author}".format(
             author=_format_hashtag(auth))
+    if type(topics) is str:
+        l = ["#%s " %x for x in topics.replace(" ","").split(";")]
+        s = "".join(l)
+        tweet_text = "%s %s" %(tweet_text,s)
+    
+    # return tweet text:
     return tweet_text
 
 def _format_hashtag(text):
