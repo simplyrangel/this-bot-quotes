@@ -40,11 +40,11 @@ def tweetme(text,media_id=None):
      
 def generate_hashtags(auth, book, topics):
     if book!="unknown":
-        tweet_text = "#books #bookquotes #{book} #{author}".format(
+        tweet_text = "#{author} #{book} #bookquotes #reading".format(
             book=_format_hashtag(book),
             author=_format_hashtag(auth))
     else:
-        tweet_text = "#books #bookquotes #{author}".format(
+        tweet_text = "#{author} #bookquotes #reading".format(
             author=_format_hashtag(auth))
     if type(topics) is str:
         l = ["#%s " %x for x in topics.replace(" ","").split(";")]
