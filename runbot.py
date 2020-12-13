@@ -111,7 +111,8 @@ track_id = []
 # state when the last tweet occurred:
 last_tweet_time = when_last_tweet(verbose=True)
 
-# define amount of time since last tweet that may elapse:
+# tweet immediately if the time between now and the last 
+# tweet is larger than some tolerance: 
 start_tolerance = timedelta(hours=1)
 now=datetime.now()
 time_elapsed = now-last_tweet_time
@@ -133,11 +134,6 @@ while ticker.wait(interval_seconds) is False:
         day=now.day,
         hour=he)
     if now >= ti and now <= te:
-        # check when last tweet was sent, and tweet immediately if 
-        # the last tweet was outside a certain amount of time:
-        
-        
-        
         tweet_quote(track_id)
     else:
         print("no tweet; outside acceptable time.")
