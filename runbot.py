@@ -51,6 +51,11 @@ def tweet_quote(track_id):
         auth,
         book,
         quote,
+        imagec="black",
+        textc="white",
+        borderx=80,
+        text_anchor=(80,-10),
+        fontsize=60,
         poetry_flag=poetry_flag)
 
     # upload tweet image:

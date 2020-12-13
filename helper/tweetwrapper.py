@@ -37,7 +37,7 @@ def tweetme(text,media_id=None):
     process = Popen(cmd,stdout=PIPE,stderr=PIPE)
     stdout,stderr = process.communicate()
      
-def generate_hashtags(auth, book, topics):
+def generate_hashtags(auth, book, topics=None):
     if book!="unknown":
         tweet_text = "#{author} #{book} #bookquotes #reading".format(
             book=_format_hashtag(book),

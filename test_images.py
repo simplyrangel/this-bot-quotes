@@ -26,6 +26,11 @@ for quote_id in df.index:
         auth,
         book,
         quote,
+        imagec="black",
+        textc="white",
+        borderx=80,
+        text_anchor=(80,-10),
+        fontsize=60,
         poetry_flag=poetry_flag,
         outfi="bin/sample_image_%d.png" %quote_id)
     

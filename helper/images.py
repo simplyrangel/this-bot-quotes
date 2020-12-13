@@ -20,14 +20,17 @@ def poetry2image(
         book,
         quote,
         imagec="white",
+        textc = "black",
         borderx=80,
         bordery=40,
+        text_anchor="default",
         font="Pillow/Tests/fonts/Norasi.ttf",
         fontsize=40,
         outfi="bin/quote_of_day.png",
         ):
     # anchor text to border's top-left corner:
-    text_anchor = (borderx, bordery)
+    if text_anchor=="default":
+        text_anchor = (borderx, bordery)
     
     # determine the number of characters in the 
     # longest line of poetry:
@@ -59,7 +62,7 @@ def poetry2image(
     d = ImageDraw.Draw(im)
 
     # write formatted text to image:
-    d.text(text_anchor, result, font=fnt, fill=(0,0,0))
+    d.text(text_anchor, result, font=fnt, fill=textc)
 
     # create text
     im.save(outfi)
@@ -70,15 +73,18 @@ def quote2image(
         book,
         quote,
         imagec = "white",
+        textc = "black",
         imagex=1024, #pixels
         borderx=80, #pixels
         bordery=40, #pixels
+        text_anchor="default",
         font="Pillow/Tests/fonts/Norasi.ttf",
         fontsize=40,
         outfi = "bin/quote_of_day.png",
         ):
     # anchor text to border's top-left corner:
-    text_anchor = (borderx,bordery)
+    if text_anchor=="default":
+        text_anchor = (borderx,bordery)
     
     # define textbox pixel length:
     boxx = imagex - 2*borderx
@@ -106,7 +112,7 @@ def quote2image(
     d = ImageDraw.Draw(im)
 
     # write formatted text to image:
-    d.text(text_anchor, result, font=fnt, fill=(0,0,0))
+    d.text(text_anchor, result, font=fnt, fill=textc)
 
     # create text
     im.save(outfi)
