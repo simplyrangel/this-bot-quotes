@@ -24,6 +24,8 @@ images.imake(
     auth,
     book,
     quote,
+    imagec="black",
+    textc="white",
     poetry_flag=poetry_flag,
     borderx=180,
     outfi="bin/0-social-media-preview.png")
