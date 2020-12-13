@@ -26,13 +26,13 @@ def tweetme(text,media_id=None):
         cmd = [
             "twurl", 
             twapi.STATUS_UPDATE,
-            "-d", 
+            "-d", #sends specified data in a POST request
             "status=%s" %text]
     else:
         cmd = [
             "twurl",
             twapi.STATUS_UPDATE,
-            "-d",
+            "-d", #sends specified data in a POST request
             "media_ids=%s&status=%s" %(media_id,text)]
     process = Popen(cmd,stdout=PIPE,stderr=PIPE)
     stdout,stderr = process.communicate()
@@ -65,9 +65,18 @@ def _format_hashtag(text):
         ":","").replace(
         "-","").replace(
         "&","")
-    
-def get_timeline():
+
+def get_last_tweet(count=1):
     process = Popen(
+        ["twurl",
+        "/1.1/statuses/user_timeline.json?count=%d" %count],
+        stdout=PIPE,
+        stderr=PIPE)
+    stdout,sterr = process.communicate()
+    return json.loads(stdout)
+
+def get_timeline():
+    process = Popen( #default request method is GET
         ["twurl", 
         twapi.HOME_TIMELINE],
         stdout=PIPE,

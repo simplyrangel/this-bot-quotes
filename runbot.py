@@ -3,7 +3,7 @@ is open)."""
 import numpy as np
 import pandas as pd
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 import helper.tweetwrapper as twrap
 import helper.images as images
 
@@ -70,7 +70,30 @@ def tweet_quote(track_id):
     
     # track the quote id:
     track_id.append(quote_id)
+
+def when_last_tweet(verbose=False):
+    stdout = twrap.get_last_tweet()
+    datetime_str = stdout[0]["created_at"]
+    aware_utc = datetime.strptime(
+        datetime_str, 
+        "%a %b %d %H:%M:%S %z %Y")
+        
+    # the Twitter API returns UTC times, but datetime.now()
+    # returns local time (Central US for me). I can't figure
+    # out how to intelligently assign timezones to the 
+    # objects, so I'll just strip the Twitter API's timezone
+    # info, and manually convert it to CT by subtracting
+    # 6 hours. 
+    naive_utc = aware_utc.replace(tzinfo=None)
+    dt = timedelta(hours=6)
+    naive_ct = naive_utc - dt
     
+    # print when the last tweet occurred:
+    if verbose is True:
+        print("The last tweet occurred at: %s" %(
+            naive_ct.strftime("%Y-%m-%d %H:%M:%S")))
+    return naive_ct
+
 # ----------------------------------------------------
 # Execute command.
 # ----------------------------------------------------
@@ -83,13 +106,22 @@ hi = 7 #first hour; 7am
 he = 22 #last hour; 10pm
 
 # track previous quotes to reduce repeats:
-df = pd.read_csv("bookquotes.csv", comment="#")
 track_id = []
+
+# state when the last tweet occurred:
+last_tweet_time = when_last_tweet(verbose=True)
+
+# define amount of time since last tweet that may elapse:
+start_tolerance = timedelta(hours=1)
+now=datetime.now()
+time_elapsed = now-last_tweet_time
+if time_elapsed > start_tolerance:
+    tweet_quote(track_id)
 
 # create event and execute once every interval:
 ticker = threading.Event()
 while ticker.wait(interval_seconds) is False:
-    now = datetime.now()
+    now = datetime.now() #returns datetime in CT; UTC-6hours
     ti = datetime(
         year=now.year,
         month=now.month,
@@ -101,6 +133,11 @@ while ticker.wait(interval_seconds) is False:
         day=now.day,
         hour=he)
     if now >= ti and now <= te:
+        # check when last tweet was sent, and tweet immediately if 
+        # the last tweet was outside a certain amount of time:
+        
+        
+        
         tweet_quote(track_id)
     else:
         print("no tweet; outside acceptable time.")
