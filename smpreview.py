@@ -9,9 +9,10 @@ import pandas as pd
 import helper.images as images
 
 # read quotes data:
-# Let's use Victor Hugo's famous 'Hunchback' quote:
+# Let's use Victor Hugo's famous 'Hunchback' quote,
+# or Thrity Umrigar's quote on freedom:
 df = pd.read_csv("bookquotes.csv", comment="#")
-quote_id = 32
+quote_id = 1 #32=Hunchback; 1=Thrity
 auth = df.loc[quote_id,"author"]
 book = df.loc[quote_id,"title"]
 quote = df.loc[quote_id, "quote"]
