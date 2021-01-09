@@ -14,6 +14,7 @@ for quote_id in df.index:
     auth = df.loc[quote_id,"author"]
     book = df.loc[quote_id,"title"]
     quote = df.loc[quote_id, "quote"]
+    topics = df.loc[quote_id, "topics"]
     poetry_flag = df.loc[quote_id, "poetry"]
 
     # add quotes around the quote text and book text:
@@ -35,8 +36,8 @@ for quote_id in df.index:
         outfi="bin/sample_image_%d.png" %quote_id)
     
     # show tweet body:
-    tweet_text = twrap.generate_hashtags(auth, book)
-    print(tweet_text)
+    tweet_text = twrap.generate_tweet(auth,book,quote,topics)
+    print("\n%d chars\n%s" %(len(tweet_text),tweet_text))
 
 
 

@@ -44,7 +44,7 @@ def tweet_quote(track_id):
         book="'%s'" %book
 
     # create tweet hashtags:
-    tweet_text = twrap.generate_hashtags(auth, book, topics)
+    tweet_text = twrap.generate_tweet(auth,book,quote,topics)
 
     # create tweet image:
     images.imake(

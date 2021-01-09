@@ -36,14 +36,27 @@ def tweetme(text,media_id=None):
             "media_ids=%s&status=%s" %(media_id,text)]
     process = Popen(cmd,stdout=PIPE,stderr=PIPE)
     stdout,stderr = process.communicate()
-     
+
+def generate_tweet(auth, book, quote, topics=None, char_limit=280):
+    tags = generate_hashtags(auth,book,topics)
+    
+    # leave 2 characters for newline between quote and hashtags
+    # leave 3 characters for ellipses if quote is truncated
+    # leave 1 character for trailing quotation if quote is truncated
+    if len(tags) + len(quote) + 2 <= 280:
+        return "%s\n%s" %(quote,tags)
+    else:
+        char_offset = 6
+        quote_chars = char_limit - len(tags) - char_offset
+        return "%s...'\n%s" %(quote[:quote_chars],tags)
+
 def generate_hashtags(auth, book, topics=None):
     if book!="unknown":
-        tweet_text = "#{author} #{book} #bookquotes #reading".format(
+        tweet_text = "#{author} #{book} #bookquotes #books".format(
             book=_format_hashtag(book),
             author=_format_hashtag(auth))
     else:
-        tweet_text = "#{author} #bookquotes #reading".format(
+        tweet_text = "#{author} #bookquotes #books".format(
             author=_format_hashtag(auth))
     if type(topics) is str:
         l = ["#%s " %x for x in topics.replace(" ","").split(";")]
